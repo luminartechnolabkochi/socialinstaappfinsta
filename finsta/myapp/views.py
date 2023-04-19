@@ -97,5 +97,5 @@ def remove_comment_view(request,*args,**kwrags):
 
 class ProfileDetailView(DetailView):
     model=UserProfile
-    template_name="profiledetail.html"
+    template_name="profile.html"
     context_object_name="profile"
