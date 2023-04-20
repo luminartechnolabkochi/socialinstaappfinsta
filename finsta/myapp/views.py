@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate,login,logout
 from django.urls import reverse_lazy
 
-from myapp.forms import SignUpForm,LoginForm,ProfileEditForm,PostForm
+from myapp.forms import SignUpForm,LoginForm,ProfileEditForm,PostForm,CoverPicForm
 from myapp.models import UserProfile,Posts,Comments
 
 
@@ -99,3 +99,19 @@ class ProfileDetailView(DetailView):
     model=UserProfile
     template_name="profile.html"
     context_object_name="profile"
+
+
+class ProfileListView(TemplateView):
+    template_name="profile-list.html"
+
+
+
+# profiles/{id}/coverpic/change
+def change_cover_pic_view(request,*args,**kwargs):
+    id=kwargs.get("pk")
+    prof_obj=UserProfile.objects.get(id=id)
+    form=CoverPicForm(instance=prof_obj,data=request.POST,files=request.FILES)
+    if form.is_valid():
+        form.save()
+        return redirect("profiledetail",pk=id)
+    return redirect("profiledetail",pk=id)

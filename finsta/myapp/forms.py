@@ -35,3 +35,8 @@ class PostForm(forms.ModelForm):
     class Meta:
         model=Posts
         fields=["title","image"]
+
+class CoverPicForm(forms.ModelForm):
+    class Meta:
+        model=UserProfile
+        fields=["cover_pic"]

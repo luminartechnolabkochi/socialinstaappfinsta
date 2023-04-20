@@ -10,6 +10,7 @@ class UserProfile(models.Model):
     dob=models.DateTimeField(null=True)
     following=models.ManyToManyField("self",related_name="followed_by",symmetrical=False)
     created_date=models.DateTimeField(auto_now_add=True)
+    cover_pic=models.ImageField(upload_to="coverpic",blank=True,default="/profilepics/cover.jpg")
 # profile_obj.following.add(profile_obj)
 # profile_obj.following.all()
     def __str__(self):
