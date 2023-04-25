@@ -4,9 +4,10 @@ from django.views.generic import CreateView,FormView,TemplateView,UpdateView,Lis
 from django.contrib import messages
 from django.contrib.auth import authenticate,login,logout
 from django.urls import reverse_lazy
-
+from django.db.models import Q
 from myapp.forms import SignUpForm,LoginForm,ProfileEditForm,PostForm,CoverPicForm
 from myapp.models import UserProfile,Posts,Comments
+
 
 
 class SignUpView(CreateView):
@@ -70,7 +71,7 @@ def add_like_view(request,*args,**kwargs):
     post_obj.liked_by.add(request.user)
     return redirect("index")
 
-  
+from django.db.models import Q
 # localhost:8000/posts/{id}/comments/add/
 
 def add_comment_view(request,*args,**kwargs):
@@ -81,7 +82,7 @@ def add_comment_view(request,*args,**kwargs):
     return redirect("index")
 
 
-# localhost:8000/comments/{id}/remove/
+
 def remove_comment_view(request,*args,**kwrags):
     id=kwrags.get("pk")
      
@@ -104,9 +105,8 @@ class ProfileDetailView(DetailView):
 class ProfileListView(TemplateView):
     template_name="profile-list.html"
 
+   
 
-
-# profiles/{id}/coverpic/change
 def change_cover_pic_view(request,*args,**kwargs):
     id=kwargs.get("pk")
     prof_obj=UserProfile.objects.get(id=id)
@@ -115,3 +115,44 @@ def change_cover_pic_view(request,*args,**kwargs):
         form.save()
         return redirect("profiledetail",pk=id)
     return redirect("profiledetail",pk=id)
+
+
+
+class ProfileListView(ListView):
+    model=UserProfile
+    template_name="profile-list.html"
+    context_object_name="profiles"
+
+    def get_queryset(self):
+        return UserProfile.objects.exclude(user=self.request.user)
+    
+    def post(self,request,*args,**kwargs):
+        pname=request.POST.get("username")
+        qs=UserProfile.objects.filter(Q(user__username__icontains=pname) | Q(user__first_name__icontains=pname)) 
+        return render(request,self.template_name,{"profiles":qs})
+    
+
+  
+
+# localhost:8000/profiles/{id}/follow/
+def follow_view(request,*args,**kwargs):
+    id=kwargs.get("pk")
+    profile_obj=UserProfile.objects.get(id=id)
+    user_prof=UserProfile.objects.get(user=request.user)
+    user_prof.following.add(profile_obj)
+    user_prof.save()
+    print(f"{request.user} is following  {user_prof.following.all()}")
+
+    return redirect("index")
+
+
+def unfollow_view(request,*args,**kwargs):
+    id=kwargs.get("pk")
+    profile_obj=UserProfile.objects.get(id=id)
+    user_prof=UserProfile.objects.get(user=request.user)
+    user_prof.following.remove(profile_obj)
+    user_prof.save()
+    print(f"{request.user} is following  {user_prof.following.all()}")
+    
+    return redirect("index")
+

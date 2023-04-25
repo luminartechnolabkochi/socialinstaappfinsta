@@ -1,68 +1,70 @@
 <!DOCTYPE html>
 {%load static%}
-<!-- Coding by CodingLab | www.codinglabweb.com-->
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!--<title>Profile Card UI Design</title>-->
+<html>
+<head>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
 
-    <!-- CSS -->
-    <link rel="stylesheet" href="{%static 'css/profilecardstyle.css'%}" />
 
-    <!-- Boxicons CSS -->
-    <link
-      href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css"
-      rel="stylesheet"
-    />
-  </head>
-  <body>
-    <div class="profile-card">
-      <div class="image">
-        <!--<img src="profile.jpg" alt="" class="profile-img" />-->
-      </div>
+  <link rel="stylesheet" href="{%static 'css/cardstyle.css'%}">
 
-      <div class="text-data">
-        <span class="name">CodingLab</span>
-        <span class="job">YouTuber & Blogger</span>
-      </div>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-      <div class="media-buttons">
-        <a href="#" style="background: #4267b2" class="link">
-          <i class="bx bxl-facebook"></i>
-        </a>
-        <a href="#" style="background: #1da1f2" class="link">
-          <i class="bx bxl-twitter"></i>
-        </a>
-        <a href="#" style="background: #e1306c" class="link">
-          <i class="bx bxl-instagram"></i>
-        </a>
-        <a href="#" style="background: #ff0000" class="link">
-          <i class="bx bxl-youtube"></i>
-        </a>
-      </div>
+</head>
+<body>
 
-      <div class="buttons">
-        <button class="button">Subscribe</button>
-        <button class="button">Message</button>
-      </div>
+<h2 style="text-align:center">User Profile Card</h2>
 
-      <div class="analytics">
-        <div class="data">
-          <i class="bx bx-heart"></i>
-          <span class="number">60k</span>
-        </div>
-        <div class="data">
-          <i class="bx bx-message-rounded"></i>
-          <span class="number">20k</span>
-        </div>
-        <div class="data">
-          <i class="bx bx-share"></i>
-          <span class="number">12k</span>
-        </div>
-      </div>
+<!-- search section start -->
+<div class="row">
+  <div class="col-4"></div>
+  <div class="col-4">
+    <form action="" method="post">
+      {%csrf_token%}
+    
+    <div class="input-group mb-3">
+      <input type="text" class="form-control" placeholder="enter  username" aria-label="Recipient's username" aria-describedby="basic-addon2" name="username">
+      <input type="submit" class="input-group-text" id="basic-addon2" value="search"></input>
     </div>
-  </body>
-</html>
+    
+    
+    </form>
+  </div>
+  <div class="col-4"></div>
+</div>
 
+<!-- end search section -->
+
+{%for profile in profiles%}
+
+    <div class="card">
+      {%if profile.profile_pic%}
+       <img src="{{profile.profile_pic.url}}" alt="John" style="width:100%" height="200px" >
+      {%endif%}
+      <h1> <a href="{%url 'profiledetail' profile.id%}">{{profile}}</a></h1>
+      <p class="title">{{profile.bio}}</p>
+      <p>{{profile.address}}</p>
+      <div style="margin: 24px 0;">
+        {{profile.following.all.count}} following | 
+
+        {{profile.followed_by.all.count}} followers
+       
+      </div>
+      <p>
+         
+  {%if request.user.profile in profile.followed_by.all%}
+
+        <a href="{%url 'unfollow' profile.id%}" class="btn btn-outline-dark">following</a>
+  {%else%}
+        <a href="{%url 'follow' profile.id%}" class="btn btn-dark">follow</a>
+
+  {%endif%}
+
+
+        
+
+      </p>
+    </div>
+
+{%endfor%}
+</body>
+</html>

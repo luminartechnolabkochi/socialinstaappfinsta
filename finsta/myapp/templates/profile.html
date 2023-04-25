@@ -24,7 +24,11 @@
             <img class="coverpic shadow" src="{{profile.cover_pic.url}}" alt="">
         </div>
         <div class="profile_section d-flex justify-content-between">
+           
+            {%if profile.profile_pic%}
             <img class="propic" src="{{profile.profile_pic.url}}" alt="">
+            {%endif%}
+
             <h1 class="onwername ">{{profile}}</h1>
             <div class=" me-5">
                 <button href="" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-regular fa-pen-to-square"></i>

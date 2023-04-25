@@ -15,6 +15,23 @@ class UserProfile(models.Model):
 # profile_obj.following.all()
     def __str__(self):
         return self.user.username
+    # request.user.profile.friend_requests
+    
+    @property
+    def friend_requests(self):
+        all_profiles=UserProfile.objects.all().exclude(user=self.user)
+        following_profiles=self.following.all()
+        suggestions=set(all_profiles) - set(following_profiles)
+        return suggestions
+
+#   request.user.is_authenticated()
+
+    
+  
+        # all_profiles=self.objects.all()
+        # following_profiles=self.following.all()
+        # suggestion=set(all_profiles) - set(following_profiles)
+        # return suggestion
     
 class Posts(models.Model):
     title=models.CharField(max_length=200)

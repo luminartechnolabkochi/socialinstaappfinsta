@@ -82,9 +82,9 @@ html, body, h1, h2, h3, h4, h5 {font-family: "Open Sans", sans-serif}
           <div id="Demo1" class="w3-hide w3-container">
             <p>Some text..</p>
           </div>
-          <button onclick="myFunction('Demo2')" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-calendar-check-o fa-fw w3-margin-right"></i> My Events</button>
+          <button onclick="myFunction('Demo2')" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-calendar-check-o fa-fw w3-margin-right"></i> Community</button>
           <div id="Demo2" class="w3-hide w3-container">
-            <p>Some other text..</p>
+            <a href="{%url 'profile-all'%}">all profiles</a>
           </div>
           <button onclick="myFunction('Demo3')" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-users fa-fw w3-margin-right"></i> My Photos</button>
           <div id="Demo3" class="w3-hide w3-container">
@@ -311,22 +311,31 @@ html, body, h1, h2, h3, h4, h5 {font-family: "Open Sans", sans-serif}
         </div>
       </div>
       <br>
-      
-      <div class="w3-card w3-round w3-white w3-center">
-        <div class="w3-container">
-          <p>Friend Request</p>
-          <img src="/w3images/avatar6.png" alt="Avatar" style="width:50%"><br>
-          <span>Jane Doe</span>
-          <div class="w3-row w3-opacity">
-            <div class="w3-half">
-              <button class="w3-button w3-block w3-green w3-section" title="Accept"><i class="fa fa-check"></i></button>
-            </div>
-            <div class="w3-half">
-              <button class="w3-button w3-block w3-red w3-section" title="Decline"><i class="fa fa-remove"></i></button>
+        {%for pro in request.user.profile.friend_requests%}
+        <div class="w3-card w3-round w3-white w3-center">
+          <div class="w3-container">
+           
+            
+            <p>Friend Request</p>
+            {%if pro.profile_pic%}
+             <img src="{{pro.profile_pic.url}}" alt="Avatar" style="width:50%"><br>
+
+            {%endif%}
+
+            
+            <span>{{pro.user}}</span>
+            <div class="w3-row w3-opacity">
+              <div class="w3-half">
+                <button class="w3-button w3-block w3-green w3-section" title="Accept"><i class="fa fa-check"></i></button>
+              </div>
+              <div class="w3-half">
+                <button class="w3-button w3-block w3-red w3-section" title="Decline"><i class="fa fa-remove"></i></button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+        {%endfor%}
+    
       <br>
       
       <div class="w3-card w3-round w3-white w3-padding-16 w3-center">
