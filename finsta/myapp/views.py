@@ -156,3 +156,10 @@ def unfollow_view(request,*args,**kwargs):
     
     return redirect("index")
 
+
+
+def post_delete_view(request,*args,**kwargs):
+    post_id=kwargs.get("pk")
+    post_obj=Posts.objects.get(id=post_id)
+    post_obj.delete()
+    return redirect("index")

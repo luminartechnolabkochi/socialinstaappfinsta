@@ -179,7 +179,12 @@ html, body, h1, h2, h3, h4, h5 {font-family: "Open Sans", sans-serif}
     
       {%for post in posts%}
 
+     
+
       <div class="w3-container w3-card w3-white w3-round w3-margin"><br>
+       {%if request.user == post.user%}
+          <a href="{%url 'post-remove' post.id%}">remove post</a>
+       {%endif%}
         {%if request.user.profile.profile_pic%}
         <img src="{{post.user.profile.profile_pic.url}}" alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:60px">
 
@@ -393,3 +398,11 @@ function openNav() {
 
 </body>
 </html> 
+
+
+<!-- logout -->
+<!-- decorators -->
+<!-- social auth -->
+
+<!-- api's -->
+<!-- django api's DRF() -->

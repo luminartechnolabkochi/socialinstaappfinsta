@@ -32,6 +32,7 @@ urlpatterns = [
     path("profiles/<int:pk>/coverpic/change/",views.change_cover_pic_view,name="coverpic-change"),
     path("profiles/all/",views.ProfileListView.as_view(),name="profile-all"),
     path("profiles/<int:pk>/follow/",views.follow_view,name="follow"),
-    path("profiles/<int:pk>/unfollow/",views.unfollow_view,name="unfollow")
+    path("profiles/<int:pk>/unfollow/",views.unfollow_view,name="unfollow"),
+    path("posts/<int:pk>/remove/",views.post_delete_view,name="post-remove")
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

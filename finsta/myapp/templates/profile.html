@@ -24,48 +24,84 @@
             <img class="coverpic shadow" src="{{profile.cover_pic.url}}" alt="">
         </div>
         <div class="profile_section d-flex justify-content-between">
-           
+
             {%if profile.profile_pic%}
             <img class="propic" src="{{profile.profile_pic.url}}" alt="">
             {%endif%}
 
             <h1 class="onwername ">{{profile}}</h1>
             <div class=" me-5">
-                <button href="" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-regular fa-pen-to-square"></i>
+                <button href="" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"><i
+                        class="fa-regular fa-pen-to-square"></i>
                     EditProfile</button>
             </div>
 
 
             <!-- cover pic change modal -->
-            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
                 <div class="modal-dialog">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <form action="{%url 'coverpic-change' profile.id%}" method="post" enctype="multipart/form-data">
+                            {%csrf_token%}
+                            <div class="modal-body">
+                                <input type="file" accept="image/*" name="cover_pic" class="form-control">
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Change</button>
+                            </div>
+                        </form>
                     </div>
-                    <form action="{%url 'coverpic-change' profile.id%}" method="post" enctype="multipart/form-data">
-                        {%csrf_token%}
-                        <div class="modal-body">
-                            <input type="file" accept="image/*" name="cover_pic" class="form-control">
-                          </div>
-                          <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Change</button>
-                          </div>
-                    </form>
-                  </div>
                 </div>
-              </div>
-              
+            </div>
+
             <!-- ebdmodal -->
 
         </div>
         <div class="row d-flex justify-content-evenly">
             <div class="col-4 text-center mt-3 swich  "><a class="btn fs-5" href=""><span><i
                             class="fa-solid fa-book"></i></span> Time line</a></div>
-            <div class="col-4 text-center mt-3 swich "><a class="btn fs-5" href=""><span><i
-                            class="fa-solid fa-users"></i></span> Followers {{profile.followed_by.all | length}}</a>
+            
+            <!-- followers modal -->
+            <div class="modal fade" id="exampleModalfws" tabindex="-1" aria-labelledby="exampleModalLabelfws" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h1 class="modal-title fs-5" id="exampleModalLabelfws">Followers</h1>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                     {%for prof in profile.followed_by.all%}
+                     
+                        <div class="input-group mb-3">
+                          
+                            <span class="input-group-text" id="basic-addon1">
+                                {%if prof.profile_pic%}
+                        
+                                 <img src="{{ prof.profile_pic.url}}" alt="" width="100px">
+                                {%endif%}
+                            </span>
+                            <div class="form-control"  aria-label="Username" aria-describedby="basic-addon1"> {{prof}}</div>
+                        </div>
+                        
+                     {%endfor%}
+                    </div>
+                   
+                  </div>
+                </div>
+              </div>
+              
+            <!-- followers modal end -->
+                <div class="col-4 text-center mt-3 swich ">
+                <button class="btn fs-5" data-bs-toggle="modal" data-bs-target="#exampleModalfws">
+                    <span><i class="fa-solid fa-users"></i></span>
+                     Followers {{profile.followed_by.all | length}}
+                </button>
             </div>
             <div class="col-4 text-center mt-3  "><a class="btn fs-5" href=""><span><i
                             class="fa-solid fa-user"></i></span> Following {{profile.following.all | length}}</a></div>

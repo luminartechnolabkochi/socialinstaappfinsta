@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
+from random import sample
+
 
 class UserProfile(models.Model):
     user=models.OneToOneField(User,on_delete=models.CASCADE,related_name="profile")
@@ -22,9 +24,12 @@ class UserProfile(models.Model):
         all_profiles=UserProfile.objects.all().exclude(user=self.user)
         following_profiles=self.following.all()
         suggestions=set(all_profiles) - set(following_profiles)
-        return suggestions
+        if len(suggestions) >2:
+            return sample(suggestions,2)
 
-#   request.user.is_authenticated()
+       
+        return suggestions
+ 
 
     
   
